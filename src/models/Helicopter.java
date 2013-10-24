@@ -8,21 +8,21 @@ import java.util.List;
 import base_models.BasePlane;
 import base_models.PlanePart;
 
-public class Helicopter extends BasePlane implements PlaneAction{
+public class Helicopter extends BasePlane implements PlaneAction {
 
-	public Helicopter(int headX, int headY, String direction) {
-		this.name = "Helicopter";
+	public Helicopter(String name, int headX, int headY, String direction) {
+		this.name = name;
 		this.headX = headX;
 		this.headY = headY;
 		this.direction = direction;
 		listPlanePart = new ArrayList<PlanePart>();
+		listPartHited = new ArrayList<PlanePart>();
 		setShape();
 	}
 
 	@Override
 	public void setShape() {
-		NormalPart n0 = null, n1 = null, n2 = null, n3 = null, n4 = null, 
-				n5 = null, n6 = null, n7 = null, n8 = null, n9 = null;
+		NormalPart n0 = null, n1 = null, n2 = null, n3 = null, n4 = null, n5 = null, n6 = null, n7 = null, n8 = null, n9 = null;
 
 		n0 = new NormalPart(headX, headY);
 
@@ -93,6 +93,7 @@ public class Helicopter extends BasePlane implements PlaneAction{
 		for (PlanePart pl : listPlanePart) {
 			if (pl.x == x && pl.y == y) {
 				++hitCount;
+				pl.value = 0;
 				crashed = true;
 				return true;
 			}
@@ -100,8 +101,35 @@ public class Helicopter extends BasePlane implements PlaneAction{
 		return false;
 	}
 	
+	@Override
+	public void saveBlackBox(int x, int y) {
+		NormalPart part = new NormalPart(x, y);
+		part.value = 0;
+		listPartHited.add(part);
+		
+//		for (PlanePart pl : listPlanePart) {
+//			if (pl.x < 0 || pl.y < 0 || pl.x > shape.length
+//					|| pl.y > shape[0].length) {
+//				continue;
+//			}
+//			shape[pl.x][pl.y] = pl.value;
+//		}
+//
+//		for (int i = 0; i < shape.length; i++) {
+//			for (int j = 0; j < shape[i].length; j++) {
+//				System.out.print(shape[i][j] + " ");
+//			}
+//			System.out.print("\n");
+//		}
+	}
+	
+	@Override
+	public List<PlanePart> getPartHited() {
+		return listPartHited;
+	}
+
 	public static void main(String[] args) {
-		Helicopter he = new Helicopter(6, 0, "S");
+		Helicopter he = new Helicopter("Helicopter01", 6, 0, "S");
 		int[][] map = new int[10][10];
 		for (PlanePart pl : he.getPlanePart()) {
 			if (pl.x < 0 || pl.y < 0 || pl.x > 9 || pl.y > 9) {

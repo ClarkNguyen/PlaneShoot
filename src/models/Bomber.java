@@ -12,26 +12,27 @@ public class Bomber extends BasePlane implements PlaneAction {
 
 	private int hitEngineCount = 0;
 
-	public Bomber(int headX, int headY, String direction) {
-		this.name = "Fighter";
+	public Bomber(String name, int headX, int headY, String direction) {
+		this.name = name;
 		this.headX = headX;
 		this.headY = headY;
 		this.direction = direction;
 		listPlanePart = new ArrayList<PlanePart>();
+		listPartHited = new ArrayList<PlanePart>();
 		setShape();
 	}
 
 	@Override
 	public void setShape() {
 		Pilot p = null;
-		Turbojet r1 = null, r2 = null, r3 = null;
+		Engine r1 = null, r2 = null, r3 = null;
 		NormalPart n0 = null, n1 = null, n2 = null, n3 = null, n4 = null, n5 = null, n6 = null, n7 = null, n8 = null, n9 = null, n10 = null, n11 = null, n12 = null, n13 = null, n14 = null, n15 = null, n16 = null, n17 = null, n18 = null;
 
 		p = new Pilot(headX, headY);
 		if (direction.equalsIgnoreCase("N")) {
-			r1 = new Turbojet(headX + 2, headY - 2);
-			r2 = new Turbojet(headX + 2, headY + 2);
-			r3 = new Turbojet(headX + 6, headY);
+			r1 = new Engine(headX + 2, headY - 2);
+			r2 = new Engine(headX + 2, headY + 2);
+			r3 = new Engine(headX + 6, headY);
 			n0 = new NormalPart(headX + 1, headY);
 			n1 = new NormalPart(headX + 2, headY);
 			n2 = new NormalPart(headX + 3, headY);
@@ -53,9 +54,9 @@ public class Bomber extends BasePlane implements PlaneAction {
 			n18 = new NormalPart(headX + 6, headY + 1);
 
 		} else if (direction.equalsIgnoreCase("S")) {
-			r1 = new Turbojet(headX - 2, headY - 2);
-			r2 = new Turbojet(headX - 2, headY + 2);
-			r3 = new Turbojet(headX - 6, headY);
+			r1 = new Engine(headX - 2, headY - 2);
+			r2 = new Engine(headX - 2, headY + 2);
+			r3 = new Engine(headX - 6, headY);
 			n0 = new NormalPart(headX - 1, headY);
 			n1 = new NormalPart(headX - 2, headY);
 			n2 = new NormalPart(headX - 3, headY);
@@ -77,9 +78,9 @@ public class Bomber extends BasePlane implements PlaneAction {
 			n18 = new NormalPart(headX - 6, headY + 1);
 
 		} else if (direction.equalsIgnoreCase("E")) {
-			r1 = new Turbojet(headX - 2, headY - 2);
-			r2 = new Turbojet(headX + 2, headY - 2);
-			r3 = new Turbojet(headX, headY - 6);
+			r1 = new Engine(headX - 2, headY - 2);
+			r2 = new Engine(headX + 2, headY - 2);
+			r3 = new Engine(headX, headY - 6);
 			n0 = new NormalPart(headX, headY - 1);
 			n1 = new NormalPart(headX, headY - 2);
 			n2 = new NormalPart(headX, headY - 3);
@@ -101,9 +102,9 @@ public class Bomber extends BasePlane implements PlaneAction {
 			n18 = new NormalPart(headX + 1, headY - 6);
 
 		} else if (direction.equalsIgnoreCase("W")) {
-			r1 = new Turbojet(headX - 2, headY + 2);
-			r2 = new Turbojet(headX + 2, headY + 2);
-			r3 = new Turbojet(headX, headY + 6);
+			r1 = new Engine(headX - 2, headY + 2);
+			r2 = new Engine(headX + 2, headY + 2);
+			r3 = new Engine(headX, headY + 6);
 			n0 = new NormalPart(headX, headY + 1);
 			n1 = new NormalPart(headX, headY + 2);
 			n2 = new NormalPart(headX, headY + 3);
@@ -161,6 +162,7 @@ public class Bomber extends BasePlane implements PlaneAction {
 		for (PlanePart pl : listPlanePart) {
 			if (pl.x == x && pl.y == y) {
 				++hitCount;
+				pl.value = 0;
 				if (pl instanceof Engine) {
 					++hitEngineCount;
 				}
@@ -174,11 +176,44 @@ public class Bomber extends BasePlane implements PlaneAction {
 		return false;
 	}
 
+	@Override
+	public void saveBlackBox(int x, int y) {
+		NormalPart part = new NormalPart(x, y);
+		part.value = 0;
+		listPartHited.add(part);
+		
+//		for (PlanePart pl : listPlanePart) {
+//			if (pl.x < 0 || pl.y < 0 || pl.x > shape.length
+//					|| pl.y > shape[0].length) {
+//				continue;
+//			}
+//			if (pl instanceof Pilot) {
+//				shape[pl.x][pl.y] = pl.value;
+//			} else if (pl instanceof Turbojet) {
+//				shape[pl.x][pl.y] = pl.value;
+//			} else {
+//				shape[pl.x][pl.y] = pl.value;
+//			}
+//		}
+//
+//		for (int i = 0; i < shape.length; i++) {
+//			for (int j = 0; j < shape[i].length; j++) {
+//				System.out.print(shape[i][j] + " ");
+//			}
+//			System.out.print("\n");
+//		}
+	}
+	
+	@Override
+	public List<PlanePart> getPartHited() {
+		return listPartHited;
+	}
+
 	public static void main(String[] args) {
 		// Bomber bo = new Bomber(1, 5, "N");
 		// Bomber bo = new Bomber(8, 5, "S");
 		// Bomber bo = new Bomber(5, 8, "E");
-		Bomber bo = new Bomber(5, 1, "W");
+		Bomber bo = new Bomber("Bomber01", 5, 1, "W");
 		int[][] map = new int[10][10];
 		for (PlanePart pl : bo.getPlanePart()) {
 			if (pl.x < 0 || pl.y < 0 || pl.x > 9 || pl.y > 9) {
