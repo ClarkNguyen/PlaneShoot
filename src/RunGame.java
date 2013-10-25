@@ -37,7 +37,7 @@ public class RunGame {
 		}
 
 		try {
-			scanner = new Scanner(new File("four_h_outside.map"));
+			scanner = new Scanner(new File(mapFileName));
 			rows = scanner.nextInt();
 			cols = scanner.nextInt();
 			scanner.nextLine();
@@ -49,13 +49,13 @@ public class RunGame {
 				int headY = Integer.valueOf(planeData[2]);
 				String direction = planeData[3];
 				if (type.equalsIgnoreCase("H")) {
-					Helicopter he = new Helicopter("", headX, headY, direction);
+					Helicopter he = new Helicopter(headX, headY, direction);
 					listPlanes.add(he);
 				} else if (type.equalsIgnoreCase("F")) {
-					Fighter fi = new Fighter("", headX, headY, direction);
+					Fighter fi = new Fighter(headX, headY, direction);
 					listPlanes.add(fi);
 				} else if (type.equalsIgnoreCase("B")) {
-					Bomber bo = new Bomber("", headX, headY, direction);
+					Bomber bo = new Bomber(headX, headY, direction);
 					listPlanes.add(bo);
 				}
 			}
@@ -113,26 +113,5 @@ public class RunGame {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
-		// // Helicopter he = new Helicopter("Helicoper01", 2, 1, "N");
-		// Helicopter he = new Helicopter("Helicoper01", 2, 8, "N");
-		// Fighter fi = new Fighter("Fighter01", 13, 3, "S");
-		// // Fighter fi = new Fighter("Fighter01", 6, 10, "S");
-		// Bomber bo = new Bomber("Bomber01", 5, 13, "E");
-		//
-		// listPlanes.add(he);
-		// listPlanes.add(fi);
-		// listPlanes.add(bo);
-		// Map map = new Map(15, 15, listPlanes);
-		//
-		// map.showMap();
-		//
-		// map.shoot(2, 1);
-		// map.shoot(5, 8);
-		// map.shoot(12, 3);
-		// map.shoot(5, 11);
-		// System.out.println("after shoot");
-		// map.refreshMap();
-		// map.showMap();
 	}
 }

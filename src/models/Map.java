@@ -16,9 +16,6 @@ public class Map {
 		this.cols = cols;
 		arrMap = new int[rows][cols];
 		this.listPlanes = listPlanes;
-		for (BasePlane basePlane : listPlanes) {
-			basePlane.shape = arrMap;
-		}
 		combineAllPlaneInMap();
 	}
 
@@ -96,9 +93,7 @@ public class Map {
 		return hited;
 	}
 
-	/**
-	 * draw all plane on map
-	 */
+	// combine all plane on map
 	public void combineAllPlaneInMap() {
 		for (BasePlane basePlane : listPlanes) {
 			List<PlanePart> listPlaneParts = basePlane.getPlanePart();
@@ -113,6 +108,7 @@ public class Map {
 		}
 	}
 
+	// show map on console screen
 	public void showMap() {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
@@ -157,6 +153,7 @@ public class Map {
 		}
 	}
 
+	// check if game is over
 	public boolean isOver() {
 		for (BasePlane basePlane : listPlanes) {
 			if (!basePlane.crashed) {

@@ -12,18 +12,17 @@ public class Bomber extends BasePlane implements PlaneAction {
 
 	private int hitEngineCount = 0;
 
-	public Bomber(String name, int headX, int headY, String direction) {
-		this.name = name;
+	public Bomber(int headX, int headY, String direction) {
 		this.headX = headX;
 		this.headY = headY;
 		this.direction = direction;
 		listPlanePart = new ArrayList<PlanePart>();
 		listPartHited = new ArrayList<PlanePart>();
-		setShape();
+		initPlanePart();
 	}
 
 	@Override
-	public void setShape() {
+	public void initPlanePart() {
 		Pilot p = null;
 		Engine r1 = null, r2 = null, r3 = null;
 		NormalPart n0 = null, n1 = null, n2 = null, n3 = null, n4 = null, n5 = null, n6 = null, n7 = null, n8 = null, n9 = null, n10 = null, n11 = null, n12 = null, n13 = null, n14 = null, n15 = null, n16 = null, n17 = null, n18 = null;
@@ -161,6 +160,9 @@ public class Bomber extends BasePlane implements PlaneAction {
 	public boolean takeShoot(int x, int y) {
 		for (PlanePart pl : listPlanePart) {
 			if (pl.x == x && pl.y == y) {
+				if (pl.value == 0) {
+					return false;
+				}
 				++hitCount;
 				pl.value = 0;
 				if (pl instanceof Engine) {
@@ -181,59 +183,11 @@ public class Bomber extends BasePlane implements PlaneAction {
 		NormalPart part = new NormalPart(x, y);
 		part.value = 0;
 		listPartHited.add(part);
-		
-//		for (PlanePart pl : listPlanePart) {
-//			if (pl.x < 0 || pl.y < 0 || pl.x > shape.length
-//					|| pl.y > shape[0].length) {
-//				continue;
-//			}
-//			if (pl instanceof Pilot) {
-//				shape[pl.x][pl.y] = pl.value;
-//			} else if (pl instanceof Turbojet) {
-//				shape[pl.x][pl.y] = pl.value;
-//			} else {
-//				shape[pl.x][pl.y] = pl.value;
-//			}
-//		}
-//
-//		for (int i = 0; i < shape.length; i++) {
-//			for (int j = 0; j < shape[i].length; j++) {
-//				System.out.print(shape[i][j] + " ");
-//			}
-//			System.out.print("\n");
-//		}
 	}
 	
 	@Override
 	public List<PlanePart> getPartHited() {
 		return listPartHited;
-	}
-
-	public static void main(String[] args) {
-		// Bomber bo = new Bomber(1, 5, "N");
-		// Bomber bo = new Bomber(8, 5, "S");
-		// Bomber bo = new Bomber(5, 8, "E");
-		Bomber bo = new Bomber("Bomber01", 5, 1, "W");
-		int[][] map = new int[10][10];
-		for (PlanePart pl : bo.getPlanePart()) {
-			if (pl.x < 0 || pl.y < 0 || pl.x > 9 || pl.y > 9) {
-				continue;
-			}
-			if (pl instanceof Pilot) {
-				map[pl.x][pl.y] = 2;
-			} else if (pl instanceof Turbojet) {
-				map[pl.x][pl.y] = 3;
-			} else {
-				map[pl.x][pl.y] = 1;
-			}
-		}
-
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				System.out.print(map[i][j] + " ");
-			}
-			System.out.print("\n");
-		}
 	}
 
 }
